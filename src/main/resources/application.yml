@@ -1,0 +1,33 @@
+spring:
+  mail:
+    host: smtp.163.com
+    protocol: smtp
+    default-encoding: UTF-8
+    username: 18173707896@163.com
+    password: Qwer0528
+    test-connection: true
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/forum?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+  mvc:
+    static-path-pattern: /static/**
+  thymeleaf:
+    cache: false
+
+mybatis:
+  mapper-locations: classpath*:com/bysj/mapper/*Mapper.xml
+  type-aliases-package: com.bysj.entity
+  configuration:
+      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

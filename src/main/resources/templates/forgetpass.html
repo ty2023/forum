@@ -1,0 +1,44 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>确认用户</title>
+    <link rel="stylesheet" type="text/css" href="/static/login/css/normalize.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/login/css/demo.css"/>
+    <!--必要样式-->
+    <link rel="stylesheet" type="text/css" href="/static/login/css/component.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/layui/css/layui.css"/>
+    <script type="text/javascript" src="/static/jquery-3.4.0.js"></script>
+    <script type="text/javascript" src="/static/common/forgetPass.js"></script>
+    <script type="text/javascript" src="/static/layui/layui.js"></script>
+</head>
+<body>
+<div class="container demo-1">
+    <div class="content">
+        <div id="large-header" class="large-header">
+            <canvas id="demo-canvas"></canvas>
+            <div class="logo_box">
+                <h3>确认用户</h3>
+                <form action="#" name="f" method="post">
+                    <div class="input_outer">
+                        <span class="u_user"></span>
+                        <input name="userName" id="userName" class="text"
+                               style="color: #FFFFFF !important" type="text"
+                               placeholder="请输入账户">
+                        <div>
+                            <span style="color: red" id="update_pass_name"></span>
+                        </div>
+                    </div>
+                    <div class="mb2"><a id="sub" lay-filter="sub" onclick="update_user_name()" class="act-but submit" href="javascript:;"
+                                        style="color: #FFFFFF">提交</a></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div><!-- /container -->
+<script src="/static/login/js/TweenLite.min.js"></script>
+<script src="/static/login/js/EasePack.min.js"></script>
+<script src="/static/login/js/rAF.js"></script>
+<script src="/static/login/js/demo-1.js"></script>
+</body>
+</html>

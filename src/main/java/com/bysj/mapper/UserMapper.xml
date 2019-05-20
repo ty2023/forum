@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bysj.dao.IUserMapper">
+    <resultMap id="userMap" type="user">
+        <id property="id" column="id"/>
+        <result property="userName" column="username"/>
+        <result property="passWord" column="password"/>
+        <result property="realName" column="roleName"/>
+        <result property="email" column="email"/>
+        <result property="userType" column="type"/>
+        <result property="userStart" column="start"/>
+    </resultMap>
+    <insert id="InsertUser" >
+        insert into t_user(username,password,email) values (#{userName},#{passWord},#{email})
+    </insert>
+    <update id="updatePassword">
+        update
+            t_user
+        set
+            password=#{passWord}
+        <where>
+            id=#{id}
+        </where>
+    </update>
+
+    <select id="isExitEmail" resultMap="userMap">
+        select * from t_user where email=#{email}
+    </select>
+
+    <select id="getByUserName" resultMap="userMap">
+        select * from t_user where username=#{userName}
+    </select>
+    <select id="login" resultMap="userMap">
+        select * from t_user where username=#{userName} and password=#{passWord}
+    </select>
+
+
+</mapper>
