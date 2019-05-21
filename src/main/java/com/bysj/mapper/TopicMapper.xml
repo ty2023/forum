@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bysj.dao.ITopicMapper">
+    <resultMap id="topicMap" type="topic">
+        <id property="id" column="id"/>
+        <result property="forumId" column="forumId"/>
+        <result property="forumName" column="forumName"/>
+        <result property="userId" column="userId"/>
+        <result property="userName" column="userName"/>
+        <result property="title" column="title"/>
+        <result property="repliesNum" column="replies_num"/>
+        <result property="context" column="context"/>
+        <result property="createTime" column="createTime"/>
+    </resultMap>
+
+    <select id="getList" resultMap="topicMap">
+        select
+            topic.*,
+            topic.addtime as createTime,
+            topic.forum_id as forumId,
+            forum.name as forumName,
+            topic.user_id as userId,
+            user2.username as userName
+        from
+            t_user user2
+            right join t_topic topic on topic.user_id = user2.id
+            left join t_forums forum on topic.forum_id=forum.fid
+        order by replies_num asc
+    </select>
+    <select id="getById" resultMap="topicMap">
+        select
+            topic.*,
+            topic.addtime as createTime,
+            topic.forum_id as forumId,
+            forum.name as forumName,
+            topic.user_id as userId,
+            user2.username as userName
+        from
+            t_user user2
+            right join t_topic topic on topic.user_id = user2.id
+            left join t_forums forum on topic.forum_id=forum.fid
+        where topic.id=#{id}
+    </select>
+
+</mapper>

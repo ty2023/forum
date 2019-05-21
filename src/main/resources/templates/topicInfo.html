@@ -1,0 +1,156 @@
+<!DOCTYPE html >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>帖子详情</title>
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <link rel="stylesheet" href="/static/css/global.css">
+</head>
+<body>
+
+<div class="fly-header layui-bg-black">
+    <div class="layui-container">
+        <ul class="layui-nav fly-nav layui-hide-xs">
+            <li class="layui-nav-item layui-this">
+                <a href="/forum"><i class="iconfont icon-jiaoliu"></i>主页</a>
+            </li>
+        </ul>
+
+        <ul class="layui-nav fly-nav-user">
+            <!-- 未登入的状态 -->
+            <li class="layui-nav-item" th:if="${session.user == null}">
+                <a href="/login">登入</a>
+            </li>
+            <li class="layui-nav-item" th:if="${session.user == null}">
+                <a href="/register">注册</a>
+            </li>
+
+
+            <!-- 登入后的状态 -->
+            <li class="layui-nav-item" th:if="${session.user != null}">
+                <cite class="layui-hide-xs" th:text="${session.user.getUserName()}"></cite>
+                <span>您的身份是：</span><span th:text="${session.user.getUserType() eq 1?'管理员':'普通成员'}"></span>
+                <dl class="layui-nav-child">
+                    <dd><a href="/logout" style="text-align: center;">退出</a></dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="fly-panel fly-column">
+    <div class="layui-container">
+        <ul class="layui-clear">
+            <li class="layui-hide-xs layui-this"><a href="/forum">首页</a></li>
+            <li><a href="javascript:;">分享</a></li>
+            <li><a href="javascript:;">讨论</a></li>
+            <li><a href="javascript:;">建议</a></li>
+            <li><a href="javascript:;">公告</a></li>
+            <li><a href="javascript:;">动态</a></li>
+            <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><span class="fly-mid"></span></li>
+
+            <!-- 用户登入后显示 -->
+            <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="/userController/userTopic"
+                                                                                  th:if="${session.user != null}">我发表的贴</a>
+            </li>
+
+        </ul>
+
+        <div class="fly-column-right layui-hide-xs">
+            <a href="/topicAdd" class="layui-btn">发表新帖</a>
+        </div>
+
+    </div>
+</div>
+
+<div class="layui-container">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md8 content detail">
+            <div class="fly-panel detail-box">
+                <h1 th:text="${topic.getTitle()}"></h1>
+                <div class="fly-detail-info">
+                    <div class="fly-admin-box" data-id="123">
+                        <span class="layui-btn layui-btn-xs jie-admin" type="del">删除</span>
+                    </div>
+                    <span class="fly-list-nums">
+            <a href="#comment"><i class="iconfont" title="回答">&#xe60c;</i> <span th:text="${topic.repliesNum}"></span></a>
+            <i class="iconfont" title="人气">&#xe60b;</i> 1000
+          </span>
+                </div>
+                <div class="detail-about">
+                    <div class="fly-detail-user">
+                        <a href="javascript:;" class="fly-link">
+                            <cite th:text="${topic.userName}"></cite>
+                        </a>
+                        <span th:text="${#dates.format(topic.createTime, 'yyyy-MM-dd')}"></span>
+                    </div>
+                    <div class="detail-hits" id="LAY_jieAdmin" data-id="123">
+                        <span class="layui-btn layui-btn-xs jie-admin" type="edit"><a href="add.html">编辑此贴</a></span>
+                    </div>
+                </div>
+                <div class="detail-body photos">
+                    <p th:text="${topic.context}"></p>
+                </div>
+            </div>
+
+            <div class="fly-panel detail-box" id="flyReply">
+                <fieldset class="layui-elem-field layui-field-title" style="text-align: center;">
+                    <legend>评论</legend>
+                </fieldset>
+
+                <ul class="jieda" id="jieda">
+                    <li data-id="111" class="jieda-daan" th:each="thread :${threads}">
+                        <a name="item-1111111111"></a>
+                        <div class="detail-about detail-about-reply">
+                            <div class="fly-detail-user">
+                                <a href="" class="fly-link">
+                                    <cite th:text="${thread.userName}"></cite>
+                                </a>
+                                <span th:if="${thread.userName eq topic.userName}">(楼主)</span>
+                            </div>
+
+                            <div class="detail-hits">
+                                <span th:text="${#dates.format(thread.createTime, 'yyyy-MM-dd')}"></span>
+                                <span th:text="${thread.centext}"></span>
+                            </div>
+                        </div>
+                        <div class="jieda-reply">
+              <span class="jieda-zan zanok" type="zan">
+                <i class="iconfont icon-zan"></i>
+                <em>66</em>
+              </span>
+                            <span type="reply">
+                <i class="iconfont icon-svgmoban53"></i>
+                回复
+              </span>
+                            <div class="jieda-admin">
+                                <span type="edit">编辑</span>
+                                <span type="del">删除</span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="layui-form layui-form-pane" th:if="${session.login_user != null}">
+                    <form action="/threadsController/InsertThreads" method="post">
+                        <input type="hidden" id="topicId" th:value="${topic.id}">
+                        <input type="hidden" id="userId" th:value="${session.login_user.id}">
+                        <div class="layui-form-item layui-form-text">
+                            <a name="comment"></a>
+                            <div class="layui-input-block">
+                                <textarea id="centext" name="centext" required lay-verify="required" placeholder="请输入内容"  class="layui-textarea fly-editor" style="height: 150px;" th:text="${session.login_user == null?'您还没有登录':''}">
+                                </textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <button class="layui-btn" th:if="${session.login_user == null?'disabled':''}" lay-filter="*" >提交回复</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

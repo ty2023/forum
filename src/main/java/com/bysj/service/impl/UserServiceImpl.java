@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * @Time 12:49
  */
 @Service
-public class IUserServiceImpl implements IUserService {
+public class UserServiceImpl implements IUserService {
 
     @Autowired
     private IUserMapper userMapper;

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bysj.dao.IForumsMapper">
+    <resultMap id="forumMap" type="forums">
+        <id property="id" column="fid"/>
+        <result property="type" column="type"/>
+        <result property="name" column="name"/>
+        <result property="fid" column="fup"/>
+        <result property="fname" column="fname"/>
+        <result property="start" column="startus"/>
+    </resultMap>
+    
+    <select id="getList" resultMap="forumMap">
+        select
+            f1.*,
+            ifnull(f2.name,"无") as fname
+        from
+            t_forums f1
+            left join
+            t_forums f2
+                on
+            f1.fup=f2.fid
+        <where>
+            f1.type = #{type}
+        </where>
+    </select>
+
+</mapper>

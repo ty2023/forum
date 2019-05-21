@@ -1,10 +1,119 @@
 <!DOCTYPE html >
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>梦码论坛首页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <link rel="stylesheet" href="/static/css/global.css">
 </head>
 <body>
-<h1>欢迎登录</h1>
+
+<div class="fly-header layui-bg-black">
+    <div class="layui-container">
+        <ul class="layui-nav fly-nav layui-hide-xs">
+            <li class="layui-nav-item layui-this">
+                <a href="/forum"><i class="iconfont icon-jiaoliu"></i>主页</a>
+            </li>
+        </ul>
+
+        <ul class="layui-nav fly-nav-user">
+            <!-- 未登入的状态 -->
+            <li class="layui-nav-item" th:if="${session.user == null}">
+                <a href="/login">登入</a>
+            </li>
+            <li class="layui-nav-item" th:if="${session.user == null}">
+                <a href="/register">注册</a>
+            </li>
+
+
+            <!-- 登入后的状态 -->
+            <li class="layui-nav-item" th:if="${session.user != null}">
+                <cite class="layui-hide-xs" th:text="${session.user.getUserName()}"></cite>
+                <span>您的身份是：</span><span th:text="${session.user.getUserType() eq 1?'管理员':'普通成员'}"></span>
+                <dl class="layui-nav-child">
+                    <dd><a href="/logout" style="text-align: center;">退出</a></dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="fly-panel fly-column">
+    <div class="layui-container">
+        <ul class="layui-clear">
+            <li class="layui-hide-xs layui-this"><a href="/forum">首页</a></li>
+            <li><a href="javascript:;">分享</a></li>
+            <li><a href="javascript:;">讨论</a></li>
+            <li><a href="javascript:;">建议</a></li>
+            <li><a href="javascript:;">公告</a></li>
+            <li><a href="javascript:;">动态</a></li>
+            <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><span class="fly-mid"></span></li>
+
+            <!-- 用户登入后显示 -->
+            <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="/userController/userTopic"
+                                                                                  th:if="${session.user != null}">我发表的贴</a>
+            </li>
+
+        </ul>
+
+        <div class="fly-column-right layui-hide-xs">
+            <a href="/topicAdd" class="layui-btn">发表新帖</a>
+        </div>
+
+    </div>
+</div>
+
+<div class="layui-container">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md8">
+            <div class="fly-panel">
+                <div class="fly-panel-title fly-filter">
+                    <a>板块</a>
+                </div>
+                <ul class="fly-list">
+                    <li th:each="forum:${forumsList}">
+                        <h2>
+                            <a href="jie/detail.html" th:text="${forum.getName()}"></a>
+                        </h2>
+                        <div class="fly-list-info">
+                            <a href="user/home.html" link>
+                                <cite th:text="${forum.getStart() eq 1?'可用':'不可用'}"></cite>
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="fly-panel" style="margin-bottom: 0;">
+
+                <div class="fly-panel-title fly-filter">
+                    <a href="" class="layui-this">综合</a>
+                </div>
+
+                <ul class="fly-list">
+                    <li th:each="topic:${topicList}">
+                        <h2>
+                            <a class="layui-badge"> <span th:text="${topic.forumName}"></span></a>
+                            <a th:href="@{/threadsController/getList(id=${topic.getId()})}" th:text="${topic.title}"></a>
+                        </h2>
+                        <div class="fly-list-info">
+                            <a href="javascript:;" link>
+                                <cite th:text="${topic.userName}"></cite>
+                            </a>
+                            <span th:text="${#dates.format(topic.createTime, 'yyyy-MM-dd')}"></span>
+                            <span class="fly-list-nums">
+                <i class="iconfont icon-pinglun1" title="回复量"></i><span th:text="${topic.repliesNum}"></span>
+              </span>
+                        </div>
+                        <div class="fly-list-badge">
+                            <!--<span class="layui-badge layui-bg-red">精帖</span>-->
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

@@ -7,7 +7,7 @@ function loginSubmit() {
         $.post('/userController/login',{'userName':userName,'passWord':passWord},function (data) {
             if (data.fl){
                 alert(data.msg);
-                location.href='index';
+                location.href='/forum';
             }else {
                 alert(data.msg);
                 window.location.reload();
